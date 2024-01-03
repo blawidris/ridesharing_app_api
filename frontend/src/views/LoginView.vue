@@ -48,15 +48,15 @@ onMounted(() => {
       }
 });
 
-const formattedCredentials = computed(() => {
+const getFormattedCredentials = () => {
       return {
             phone: credentials.phone.replaceAll(' ', '').replace('(', '').replace(')', '').replace('-', ''),
             login_code: credentials.login_code
       }
-});
+};
 
 const handleLogin = () => {
-      axios.post('http://localhost:8000/api/v1/login', formattedCredentials).then(response => {
+      axios.post('http://localhost:8000/api/v1/login', getFormattedCredentials()).then(response => {
             console.log(response.data);
             waitingOnVerification.value = true
       }).catch(error => {
@@ -66,7 +66,7 @@ const handleLogin = () => {
 }
 
 const handleVerification = () => {
-      axios.post('http://localhost:8000/api/v1/login/verify', formattedCredentials).then(response => {
+      axios.post('http://localhost:8000/api/v1/login/verify', getFormattedCredentials()).then(response => {
             console.log(response.data); // authentication token
 
             // store user token

@@ -8,6 +8,7 @@ use App\Events\TripStarted;
 use App\Events\TripUpdated;
 use App\Models\Trip;
 use Illuminate\Http\Request;
+use App\Events\TripCreated;
 
 class TripController extends Controller
 {
@@ -21,14 +22,15 @@ class TripController extends Controller
         ]);
 
 
-        $request->user()->trips()->create($request->only([
+        $trip = $request->user()->trips()->create($request->only([
             'origin',
             'destination',
             'destination_name'
         ]));
 
+        TripCreated::dispatch($trip, $request->user());
 
-        return $request->user()->trips;
+        return $trip;
     }
 
 
